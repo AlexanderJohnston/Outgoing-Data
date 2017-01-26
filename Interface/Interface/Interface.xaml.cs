@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Outlook = Microsoft.Office.Interop.Outlook;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -31,7 +32,9 @@ namespace Interface
                 Type = "Prospecting"
             };
 
-            MessageBox.Show(String.Format("{0} is mailing on {1} as a {2} job.", testJob.Name, testJob.Date, testJob.Type));
+            
+
+            MessageBox.Show($"{testJob.Name} is mailing on {testJob.Date} as a {testJob.Type} job.");
         }
     }
 
@@ -40,23 +43,11 @@ namespace Interface
     /// </summary>
     internal interface IJob
     {
-        string Name
-        {
-            get;
-            set;
-        }
+        string Name { get; set; }
 
-        string Type
-        {
-            get;
-            set;
-        }
+        string Type { get; set; }
 
-        string Date
-        {
-            get;
-            set;
-        }
+        string Date { get; set; }
     }
 
     /// <summary>
@@ -66,14 +57,16 @@ namespace Interface
     {
         // Backing store for a specific job.
 
-        public string Name //Read-Write
-        { get; set; } = "";
+        public string Name { get; set; } = "";
 
-        public string Type // Read-Write
-        { get; set; } = "";
+        public string Type { get; set; } = "";
 
-        public string Date // Read-Write
-        { get; set; } = "";
+        public string Date { get; set; } = "";
+    }
+
+    public class JobFile : Job
+    {
+        //
     }
 
     /// <summary>
@@ -81,35 +74,15 @@ namespace Interface
     /// </summary>
     internal interface IClient
     {
-        string Name
-        {
-            get;
-            set;
-        }
+        string Name { get; set; }
 
-        List<String> Emails
-        {
-            get;
-            set;
-        }
+        List<string> Emails { get; set; }
 
-        string FTP
-        {
-            get;
-            set;
-        }
+        string FTP { get; set; }
 
-        string Login
-        {
-            get;
-            set;
-        }
+        string Login { get; set; }
 
-        string Password
-        {
-            get;
-            set;
-        }
+        string Password { get; set; }
     }
 
     /// <summary>
@@ -119,19 +92,38 @@ namespace Interface
     {
         // Backing store for the client.
 
-        public string Name //Read-Write
-        { get; set; } = "";
+        public string Name { get; set; } = "";
 
-        public string FTP //Read-Write
-        { get; set; } = "";
+        public string FTP { get; set; } = "";
 
-        public string Login //Read-Write
-        { get; set; } = "";
+        public string Login { get; set; } = "";
 
-        public string Password //Read-Write
-        { get; set; } = "";
+        public string Password { get; set; } = "";
 
-        public List<String> Emails //Read-Write
-        { get; set; } = new List<String>();
+        public List<string> Emails { get; set; } = new List<string>();
+    }
+
+    /// <summary>
+    /// Interface for basic email setup which will interact with Outlook interop.
+    /// </summary>
+    internal interface IEmail
+    {
+        string Subject { get; set; }
+
+        string Body { get; set; }
+
+        List<string> Attachments { get; set; }
+    }
+
+    /// <summary>
+    /// This class represents a single email to be sent out.
+    /// </summary>
+    public class Email : IEmail
+    {
+        public string Subject { get; set; } = "";
+
+        public string Body { get; set; } = "";
+
+        public List<string> Attachments { get; set; } = new List<string>();
     }
 }
