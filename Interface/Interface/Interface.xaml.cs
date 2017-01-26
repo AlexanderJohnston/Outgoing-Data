@@ -32,8 +32,6 @@ namespace Interface
                 Type = "Prospecting"
             };
 
-            
-
             MessageBox.Show($"{testJob.Name} is mailing on {testJob.Date} as a {testJob.Type} job.");
         }
     }
