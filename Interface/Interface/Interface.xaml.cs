@@ -18,16 +18,18 @@ namespace Interface
     /// <summary>
     /// Interaction logic for Interface.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         public MainWindow()
         {
             InitializeComponent();
-            InitializeComponent();
-            Job testJob = new Job();
-            testJob.Name = "AL9028E";
-            testJob.Date = "01.22.17";
-            testJob.Type = "Prospecting";
+
+            Job testJob = new Job
+            {
+                Name = "AL9028E",
+                Date = "01.22.17",
+                Type = "Prospecting"
+            };
 
             MessageBox.Show(String.Format("{0} is mailing on {1} as a {2} job.", testJob.Name, testJob.Date, testJob.Type));
         }
@@ -36,7 +38,7 @@ namespace Interface
     /// <summary>
     /// Interface for mailing jobs that enforces the various required properties.
     /// </summary>
-    interface IJob
+    internal interface IJob
     {
         string Name
         {
@@ -63,56 +65,21 @@ namespace Interface
     public class Job : IJob
     {
         // Backing store for a specific job.
-        private string jobName = "";
-        private string jobType = "";
-        private string jobDate = "";
 
         public string Name //Read-Write
-        {
-            get
-            {
-                return jobName;
-            }
-            set
-            {
-                jobName = value;
-            }
-        }
+        { get; set; } = "";
 
         public string Type // Read-Write
-        {
-            get
-            {
-                return jobType;
-            }
-            set
-            {
-                jobType = value;
-            }
-        }
+        { get; set; } = "";
 
         public string Date // Read-Write
-        {
-            get
-            {
-                return jobDate;
-            }
-            set
-            {
-                jobDate = value;
-            }
-        }
-
-        public Job() // Constructor
-        {
-        }
-
+        { get; set; } = "";
     }
 
     /// <summary>
     /// Interface for clients which enforces the properties they'll need for iteration later on.
     /// </summary>
-    interface IClient
+    internal interface IClient
     {
         string Name
         {
@@ -151,74 +118,20 @@ namespace Interface
     public class Client : IClient
     {
         // Backing store for the client.
-        private string clientName = "";
-        private string clientFTP = "";
-        private string clientLogin = "";
-        private string clientPassword = "";
-        private List<String> clientEmails = new List<String>();
 
         public string Name //Read-Write
-        {
-            get
-            {
-                return clientName;
-            }
-            set
-            {
-                clientName = value;
-            }
-        }
+        { get; set; } = "";
 
         public string FTP //Read-Write
-        {
-            get
-            {
-                return clientFTP;
-            }
-            set
-            {
-                clientFTP = value;
-            }
-        }
+        { get; set; } = "";
 
         public string Login //Read-Write
-        {
-            get
-            {
-                return clientLogin;
-            }
-            set
-            {
-                clientLogin = value;
-            }
-        }
+        { get; set; } = "";
 
         public string Password //Read-Write
-        {
-            get
-            {
-                return clientLogin;
-            }
-            set
-            {
-                clientLogin = value;
-            }
-        }
+        { get; set; } = "";
 
         public List<String> Emails //Read-Write
-        {
-            get
-            {
-                return clientEmails;
-            }
-            set
-            {
-                clientEmails = value;
-            }
-        }
-
-        public Client() //Constructor
-        {
-        }
+        { get; set; } = new List<String>();
     }
 }
