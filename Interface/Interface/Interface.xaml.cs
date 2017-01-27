@@ -35,6 +35,7 @@ namespace Interface
             };
             MessageBox.Show($"{testJob.Name} is mailing on {testJob.Date} as a {testJob.Type} job.");
             FileObserveration.House("02.06.17");
+            FileObserveration.Prospecting();
         }
     }
 
@@ -162,13 +163,14 @@ namespace Interface
             const string baseDir = @"\\engagests1\Elements\Prospect Jobs\Conversions\";
             List<string> prospecting = Directory.GetDirectories(baseDir).ToList();
             // This is used to differentiate job folders from general folders.
-            Regex nameSchema = new Regex(@"^\w{2}\d{4}\w$");
+            Regex nameSchema = new Regex(@"\w{2}\d{4}\w$");
             List<string> jobList = new List<string>();
             foreach (string job in prospecting)
             {
                 try
                 {
-                    if (nameSchema.Match(job).Success) { jobList.Add(job);}
+                    if (!nameSchema.Match(job).Success) continue;
+                    jobList.Add(job);
                 }
                 catch (ArgumentNullException e)
                 {
