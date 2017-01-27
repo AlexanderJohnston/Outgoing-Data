@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Outlook = Microsoft.Office.Interop.Outlook;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -31,8 +33,8 @@ namespace Interface
                 Date = "01.22.17",
                 Type = "Prospecting"
             };
-
             MessageBox.Show($"{testJob.Name} is mailing on {testJob.Date} as a {testJob.Type} job.");
+            FileObserveration.House("02.06.17");
         }
     }
 
@@ -124,4 +126,58 @@ namespace Interface
 
         public List<string> Attachments { get; set; } = new List<string>();
     }
+
+    public class FileObserveration
+    {
+        /// <summary>
+        /// Accesses the house job files to see what is available based on a date.
+        /// </summary>
+        /// <param name="date">Formatted as "MM.dd.yy".</param>
+        /// <returns>An array of jobs available for that date.</returns>
+        public static string[] House(string date)
+        {
+            const string baseDir = @"\\engagests1\Elements\Prospect Jobs\Conversions\00-HOUSE_PROUSE\Completed\";
+            string[] house = Directory.GetDirectories(baseDir + date + @" House\");
+            return house;
+        }
+
+        /// <summary>
+        /// Accesses the prospecting house files to see what is available based on a date.
+        /// </summary>
+        /// <param name="date">Formatted as "MM.dd.yy".</param>
+        /// <returns>An array of jobs available for that date.</returns>
+        public static string[] Prouse(string date)
+        {
+            const string baseDir = @"\\engagests1\Elements\Prospect Jobs\Conversions\00-HOUSE_PROUSE\Completed\";
+            string[] prouse = Directory.GetDirectories(baseDir + date + @" Prospecting-PROUSE\");
+            return prouse;
+        }
+
+        /// <summary>
+        /// Accesses the full prospecting files to see what is available.
+        /// </summary>
+        /// <returns>An array of jobs available in prospecting.</returns>
+        public static List<string> Prospecting()
+        {
+            const string baseDir = @"\\engagests1\Elements\Prospect Jobs\Conversions\";
+            List<string> prospecting = Directory.GetDirectories(baseDir).ToList();
+            // This is used to differentiate job folders from general folders.
+            Regex nameSchema = new Regex(@"^\w{2}\d{4}\w$");
+            List<string> jobList = new List<string>();
+            foreach (string job in prospecting)
+            {
+                try
+                {
+                    if (nameSchema.Match(job).Success) { jobList.Add(job);}
+                }
+                catch (ArgumentNullException e)
+                {
+                    MessageBox.Show("There are no folders, or your Prospecting drive has moved elsewhere.");
+                    throw;
+                }
+            }
+            return jobList;
+        }
+    }
+
 }
