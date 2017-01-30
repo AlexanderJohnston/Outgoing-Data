@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using Outlook = Microsoft.Office.Interop.Outlook;
@@ -35,6 +36,7 @@ namespace Interface
             };
             MessageBox.Show($"{testJob.Name} is mailing on {testJob.Date} as a {testJob.Type} job.");
             FileObserveration.House("02.06.17");
+            FileObserveration.Prouse("02.06.17");
             FileObserveration.Prospecting();
         }
     }
@@ -138,7 +140,7 @@ namespace Interface
         public static string[] House(string date)
         {
             const string baseDir = @"\\engagests1\Elements\Prospect Jobs\Conversions\00-HOUSE_PROUSE\Completed\";
-            string[] house = Directory.GetDirectories(baseDir + date + @" House\");
+            string[] house = Directory.GetDirectories(path: baseDir + date + @" House\");
             return house;
         }
 
@@ -150,7 +152,7 @@ namespace Interface
         public static string[] Prouse(string date)
         {
             const string baseDir = @"\\engagests1\Elements\Prospect Jobs\Conversions\00-HOUSE_PROUSE\Completed\";
-            string[] prouse = Directory.GetDirectories(baseDir + date + @" Prospecting-PROUSE\");
+            string[] prouse = Directory.GetDirectories(path: baseDir + date + @" Prospecting-PROUSE\");
             return prouse;
         }
 
@@ -161,7 +163,7 @@ namespace Interface
         public static List<string> Prospecting()
         {
             const string baseDir = @"\\engagests1\Elements\Prospect Jobs\Conversions\";
-            List<string> prospecting = Directory.GetDirectories(baseDir).ToList();
+            List<string> prospecting = Directory.GetDirectories(path: baseDir).ToList();
             // This is used to differentiate job folders from general folders.
             Regex nameSchema = new Regex(@"\w{2}\d{4}\w$");
             List<string> jobList = new List<string>();
@@ -179,6 +181,26 @@ namespace Interface
                 }
             }
             return jobList;
+        }
+    }
+
+    internal interface JobList
+    {
+        Collection<Job> Jobs { get; set; }
+    }
+
+    public class JobNode : JobList
+    {
+        public Collection<Job> Jobs { get; set; } = new Collection<Job>();
+
+        public void Add(Job newJob)
+        {
+            this.Jobs.Add(newJob);
+        }
+
+        public void Remove(Job badJob)
+        {
+            this.Jobs.Remove(badJob);
         }
     }
 

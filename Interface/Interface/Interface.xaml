@@ -4,7 +4,25 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Interface"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         Title="Interface" Height="350" Width="525">
-    <Grid/>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height ="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TreeView Grid.Row="0">
+            <TreeView.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Foreground="Red" Text="{Binding}"></TextBlock>
+                </DataTemplate>
+            </TreeView.ItemTemplate>
+            <system:String>Western Conference</system:String> 
+            <system:String>Eastern Conference</system:String>
+        </TreeView>
+        
+        <Button Grid.Row="1" Height="100"/>
+    </Grid>
 </Window>
