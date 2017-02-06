@@ -32,6 +32,9 @@ namespace Interface
             InitializeComponent();
         }
 
+        /// <summary>
+        ///  Create a new work thread to run async for data binding.
+        /// </summary>
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
             BackgroundWorker work = new BackgroundWorker();
@@ -40,11 +43,17 @@ namespace Interface
             work.RunWorkerAsync();
         }
 
+        /// <summary>
+        /// Populate the list of jobs from House, Prouse, and Prospecting for our data binding.
+        /// </summary>
         private void Work_DoWork(object sender, DoWorkEventArgs e)
         {
             _jobNodes = GatherJobs.Run("02.06.17");
         }
 
+        /// <summary>
+        /// Jobs have been constructed and are now ready to bind to the treeview.
+        /// </summary>
         private void Work_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             JobsTreeView.ItemsSource = _jobNodes;
@@ -53,7 +62,7 @@ namespace Interface
     }
 
     /// <summary>
-    /// Interface for mailing jobs that enforces the various required properties.
+    /// Interface for mailing jobs that enforces the various required properties. To be expanded upon.
     /// </summary>
     internal interface IJob
     {
@@ -80,14 +89,14 @@ namespace Interface
 
     public class JobNode
     {
-        public ObservableCollection<Job> Jobs { get; set; }
+        public List<Job> Jobs { get; set; }
 
         public string Type { get; set; }
 
         public JobNode()
         {
             
-            this.Jobs = new ObservableCollection<Job>();
+            this.Jobs = new List<Job>();
         }
     }
 
@@ -167,7 +176,7 @@ namespace Interface
         /// Accesses the house job files to see what is available based on a date.
         /// </summary>
         /// <param name="date">Formatted as "MM.dd.yy".</param>
-        /// <returns>An array of jobs available for that date.</returns>
+        /// <returns>A JobNode (List of Jobs with a Type) of available products in House for that date.</returns>
         public static JobNode House(string date)
         {
             const string baseDir = @"\\engagests1\Elements\Prospect Jobs\Conversions\00-HOUSE_PROUSE\Completed\";
@@ -199,7 +208,7 @@ namespace Interface
         /// Accesses the prospecting house files to see what is available based on a date.
         /// </summary>
         /// <param name="date">Formatted as "MM.dd.yy".</param>
-        /// <returns>An array of jobs available for that date.</returns>
+        /// <returns>A JobNode (List of Jobs with a Type) of available products in Prouse for that date.</returns>
         public static JobNode Prouse(string date)
         {
             const string baseDir = @"\\engagests1\Elements\Prospect Jobs\Conversions\00-HOUSE_PROUSE\Completed\";
@@ -230,7 +239,7 @@ namespace Interface
         /// <summary>
         /// Accesses the full prospecting files to see what is available.
         /// </summary>
-        /// <returns>An array of jobs available in prospecting.</returns>
+        /// <returns>A JobNode (List of Jobs with a Type) of available products in prospecting.</returns>
         public static JobNode Prospecting()
         {
             const string baseDir = @"\\engagests1\Elements\Prospect Jobs\Conversions\";
