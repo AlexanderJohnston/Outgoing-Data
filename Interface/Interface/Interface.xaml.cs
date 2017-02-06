@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using Outlook = Microsoft.Office.Interop.Outlook;
@@ -24,24 +25,30 @@ namespace Interface
     /// </summary>
     public partial class MainWindow
     {
+        private List<JobNode> _jobNodes = new List<JobNode>();
+
         public MainWindow()
         {
             InitializeComponent();
+        }
 
-            Job testJob = new Job
-            {
-                Name = "AL9028E",
-                Date = "01.22.17",
-                Type = "Prospecting"
-            };
-            //MessageBox.Show($"{testJob.Name} is mailing on {testJob.Date} as a {testJob.Type} job.");
-            //FileObserveration.House("02.06.17");
-            //FileObserveration.Prouse("02.06.17");
+        private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            BackgroundWorker work = new BackgroundWorker();
+            work.RunWorkerCompleted += Work_RunWorkerCompleted;
+            work.DoWork += Work_DoWork;
+            work.RunWorkerAsync();
+        }
 
-            JobNode houseNode = FileObserveration.House("01.09.17");
-            JobNode prouseNode = FileObserveration.Prouse("01.09.17");
-            JobNode prospectingNode = FileObserveration.Prospecting();
-            var test = "";
+        private void Work_DoWork(object sender, DoWorkEventArgs e)
+        {
+            _jobNodes = GatherJobs.Run("02.06.17");
+        }
+
+        private void Work_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            JobsTreeView.ItemsSource = _jobNodes;
+            LoadingGrid.Visibility = Visibility.Collapsed;
         }
     }
 
@@ -55,11 +62,6 @@ namespace Interface
         string Type { get; set; }
 
         string Date { get; set; }
-    }
-
-    internal interface IJobList
-    {
-        Collection<Job> Jobs { get; set; }
     }
 
     /// <summary>
@@ -76,18 +78,28 @@ namespace Interface
         public string Date { get; set; } = "";
     }
 
-    public class JobNode : IJobList
+    public class JobNode
     {
-        public Collection<Job> Jobs { get; set; } = new Collection<Job>();
+        public ObservableCollection<Job> Jobs { get; set; }
 
-        public void Add(Job newJob)
+        public string Type { get; set; }
+
+        public JobNode()
         {
-            Jobs.Add(newJob);
+            
+            this.Jobs = new ObservableCollection<Job>();
         }
+    }
 
-        public void Remove(Job badJob)
+    public class GatherJobs
+    {
+        public static List<JobNode> Run(string date)
         {
-            Jobs.Remove(badJob);
+            JobNode houseNode = FileObserveration.House(date);
+            JobNode prouseNode = FileObserveration.Prouse(date);
+            JobNode prospectingNode = FileObserveration.Prospecting();
+            List<JobNode> currentJobs = new List<JobNode> {houseNode, prouseNode, prospectingNode};
+            return currentJobs;
         }
     }
 
@@ -171,7 +183,7 @@ namespace Interface
                     foundHouse.Name = (nameSchema.Match(job).Value);
                     foundHouse.Date = date;
                     foundHouse.Type = "House";
-                    jobList.Add(foundHouse);
+                    jobList.Jobs.Add(foundHouse);
                 }
                 catch (ArgumentNullException e)
                 {
@@ -179,6 +191,7 @@ namespace Interface
                     throw;
                 }
             }
+            jobList.Type = "House";
             return jobList;
         }
 
@@ -202,7 +215,7 @@ namespace Interface
                     foundProuse.Name = (nameSchema.Match(job).Value);
                     foundProuse.Date = date;
                     foundProuse.Type = "Prouse";
-                    jobList.Add(foundProuse);
+                    jobList.Jobs.Add(foundProuse);
                 }
                 catch (ArgumentNullException e)
                 {
@@ -210,6 +223,7 @@ namespace Interface
                     throw;
                 }
             }
+            jobList.Type = "Prouse";
             return jobList;
         }
 
@@ -233,7 +247,7 @@ namespace Interface
                     foundProspecting.Name = (nameSchema.Match(job).Value);
                     foundProspecting.Date = "";
                     foundProspecting.Type = "Prospecting";
-                    jobList.Add(foundProspecting);
+                    jobList.Jobs.Add(foundProspecting);
                 }
                 catch (ArgumentNullException e)
                 {
@@ -241,6 +255,7 @@ namespace Interface
                     throw;
                 }
             }
+            jobList.Type = "Prospecting";
             return jobList;
         }
     }

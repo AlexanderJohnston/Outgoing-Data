@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:Interface"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
+        Loaded="MainWindow_OnLoaded"
         Title="Interface" Height="350" Width="525">
     <Grid Margin="10">
         <Grid.RowDefinitions>
@@ -13,16 +14,28 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TreeView Grid.Row="0">
-            <TreeView.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Foreground="Red" Text="{Binding}"></TextBlock>
+        <TreeView Grid.Row="0" x:Name="JobsTreeView">
+            <TreeView.Resources>
+                <HierarchicalDataTemplate DataType="{x:Type local:JobNode}" ItemsSource="{Binding Jobs}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Type}"/>
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+                <DataTemplate DataType="{x:Type local:Job}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Name}" />
+                    </StackPanel>
                 </DataTemplate>
-            </TreeView.ItemTemplate>
-            <system:String>Western Conference</system:String> 
-            <system:String>Eastern Conference</system:String>
+            </TreeView.Resources>
         </TreeView>
-        
+
+        <Grid Grid.Row="0" Grid.RowSpan="1" x:Name="LoadingGrid" Background="Gray">
+            <TextBlock Text="Loading Contacts..." HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Grid>
+
         <Button Grid.Row="1" Height="100"/>
     </Grid>
 </Window>
+
+
+
