@@ -188,10 +188,12 @@ namespace Interface
                 try
                 {
                     if (!nameSchema.Match(job).Success) continue;
-                    Job foundHouse = new Job();
-                    foundHouse.Name = (nameSchema.Match(job).Value);
-                    foundHouse.Date = date;
-                    foundHouse.Type = "House";
+                    Job foundHouse = new Job
+                    {
+                        Name = (nameSchema.Match(job).Value),
+                        Date = date,
+                        Type = "House"
+                    };
                     jobList.Jobs.Add(foundHouse);
                 }
                 catch (ArgumentNullException e)
@@ -220,10 +222,12 @@ namespace Interface
                 try
                 {
                     if (!nameSchema.Match(job).Success) continue;
-                    Job foundProuse = new Job();
-                    foundProuse.Name = (nameSchema.Match(job).Value);
-                    foundProuse.Date = date;
-                    foundProuse.Type = "Prouse";
+                    Job foundProuse = new Job
+                    {
+                        Name = (nameSchema.Match(job).Value),
+                        Date = date,
+                        Type = "Prouse"
+                    };
                     jobList.Jobs.Add(foundProuse);
                 }
                 catch (ArgumentNullException e)
@@ -252,10 +256,12 @@ namespace Interface
                 try
                 {
                     if (!nameSchema.Match(job).Success) continue;
-                    Job foundProspecting = new Job();
-                    foundProspecting.Name = (nameSchema.Match(job).Value);
-                    foundProspecting.Date = "";
-                    foundProspecting.Type = "Prospecting";
+                    Job foundProspecting = new Job
+                    {
+                        Name = (nameSchema.Match(job).Value),
+                        Date = "",
+                        Type = "Prospecting"
+                    };
                     jobList.Jobs.Add(foundProspecting);
                 }
                 catch (ArgumentNullException e)
