@@ -16,7 +16,7 @@
 
 
 
-        <TreeView Name="JobsTreeView" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top">
+        <TreeView Name="JobsTreeView" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top" SelectedItemChanged="JobsTreeView_SelectedItemChanged">
             <TreeView.Resources>
                 <HierarchicalDataTemplate DataType="{x:Type local:JobNode}" ItemsSource="{Binding Jobs}">
                      <TextBlock Text="{Binding Type}"/>

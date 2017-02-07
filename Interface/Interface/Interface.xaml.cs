@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using Outlook = Microsoft.Office.Interop.Outlook;
+using Outlook = Microsoft.Office.Interop.Outlook.Application;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -17,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Office.Interop.Outlook;
 
 namespace Interface
 {
@@ -30,6 +31,8 @@ namespace Interface
         public MainWindow()
         {
             InitializeComponent();
+            EmailHandler test = null;
+            MailItem test2 = test.Email.CreateItem(OlItemType.olMailItem);
         }
 
         /// <summary>
@@ -58,6 +61,14 @@ namespace Interface
         {
             JobsTreeView.ItemsSource = _jobNodes;
             LoadingGrid.Visibility = Visibility.Collapsed;
+        }
+
+        /// <summary>
+        /// Capture when the user selects a new job, to prepare work in the background.
+        /// </summary>
+        private void JobsTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+
         }
     }
 
@@ -144,30 +155,6 @@ namespace Interface
         public string Password { get; set; } = "";
 
         public List<string> Emails { get; set; } = new List<string>();
-    }
-
-    /// <summary>
-    /// Interface for basic email setup which will interact with Outlook interop.
-    /// </summary>
-    internal interface IEmail
-    {
-        string Subject { get; set; }
-
-        string Body { get; set; }
-
-        List<string> Attachments { get; set; }
-    }
-
-    /// <summary>
-    /// This class represents a single email to be sent out.
-    /// </summary>
-    public class Email : IEmail
-    {
-        public string Subject { get; set; } = "";
-
-        public string Body { get; set; } = "";
-
-        public List<string> Attachments { get; set; } = new List<string>();
     }
 
     public class FileObserveration
