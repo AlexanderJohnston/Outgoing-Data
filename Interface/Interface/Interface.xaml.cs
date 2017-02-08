@@ -31,8 +31,21 @@ namespace Interface
         public MainWindow()
         {
             InitializeComponent();
-            EmailHandler test = null;
-            MailItem test2 = test.Email.CreateItem(OlItemType.olMailItem);
+            List<string> subjects = new List<string>
+            {
+                "alexanderj@engageusa.com", "leslies@engageusa.com"
+            };
+            List<string> attachments = new List<string>
+            {
+                @"\\ENGAGESTS1\Elements\Prospect Jobs\Conversions\CN9004A\Final Mailing Files\CN9004A01X_SAMPLE.CSV",
+                @"\\ENGAGESTS1\Elements\Prospect Jobs\Conversions\CN9004A\Final Mailing Files\CN9004A02X_SAMPLE.CSV"
+            };
+            EmailHandler test = new Interface.EmailHandler();
+            bool valid = test.CreateEmail("Test Email", subjects, "Test Body of Email", attachments);
+            if (valid == true)
+            {
+                Console.Read();
+            }
         }
 
         /// <summary>
