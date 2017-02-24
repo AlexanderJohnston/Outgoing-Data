@@ -40,12 +40,16 @@ namespace Interface
                 @"\\ENGAGESTS1\Elements\Prospect Jobs\Conversions\CN9004A\Final Mailing Files\CN9004A01X_SAMPLE.CSV",
                 @"\\ENGAGESTS1\Elements\Prospect Jobs\Conversions\CN9004A\Final Mailing Files\CN9004A02X_SAMPLE.CSV"
             };
-            EmailHandler test = new Interface.EmailHandler();
+            /*EmailHandler test = new Interface.EmailHandler();
             bool valid = test.CreateEmail("Test Email", subjects, "Test Body of Email", attachments);
             if (valid == true)
             {
-                Console.Read();
-            }
+                var result = test.Send();
+                MessageBox.Show(result, "test");
+            }*/
+
+            JobAnalysis testclass = new JobAnalysis();
+            MessageBox.Show(testclass.Approved.ToString());
         }
 
         /// <summary>
@@ -64,7 +68,7 @@ namespace Interface
         /// </summary>
         private void Work_DoWork(object sender, DoWorkEventArgs e)
         {
-            _jobNodes = GatherJobs.Run("02.06.17");
+            _jobNodes = GatherJobs.Run("03.06.17");
         }
 
         /// <summary>
@@ -134,40 +138,6 @@ namespace Interface
             List<JobNode> currentJobs = new List<JobNode> {houseNode, prouseNode, prospectingNode};
             return currentJobs;
         }
-    }
-
-    /// <summary>
-    /// Interface for clients which enforces the properties they'll need for iteration later on.
-    /// </summary>
-    internal interface IClient
-    {
-        string Name { get; set; }
-
-        List<string> Emails { get; set; }
-
-        string FTP { get; set; }
-
-        string Login { get; set; }
-
-        string Password { get; set; }
-    }
-
-    /// <summary>
-    /// This class represents a client and their properties to be accessed for sending out jobs.
-    /// </summary>
-    public class Client : IClient
-    {
-        // Backing store for the client.
-
-        public string Name { get; set; } = "";
-
-        public string FTP { get; set; } = "";
-
-        public string Login { get; set; } = "";
-
-        public string Password { get; set; } = "";
-
-        public List<string> Emails { get; set; } = new List<string>();
     }
 
     public class FileObserveration

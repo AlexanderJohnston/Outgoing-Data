@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Windows;
 using Microsoft.Office.Core;
@@ -30,6 +31,31 @@ namespace Interface
         private MailItem _emailItem = _emailApp.CreateItem(OlItemType.olMailItem);
 
         /// <summary>
+        /// Will permit the Send() method to be executed.
+        /// </summary>
+        private bool _emailCreated = false;
+
+        public string Send()
+        {
+            try
+            {
+                if (_emailCreated == true)
+                {
+                    _emailItem.Send();
+                    return "E-mail sent.";
+                }
+                else
+                {
+                    return "E-mail item was not been fully created. Sending declined for now.";
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
         /// This method will create an email item internally based on the parameters.
         /// </summary>
         /// <param name="subject">String containing plaintext.</param>
@@ -59,14 +85,24 @@ namespace Interface
                 i++;
             }
             // The regex has 3 groups, (Path); (Filename); (Extension); and is based on Windows URI.
-            string regex = @"^\\(.+\\)*(.+)\.(.+)$";
-            foreach (string fileName in attachments)
+            try
             {
-                // Add an attachment from the path as string, using regex to get the display name.
-                MatchCollection matches = Regex.Matches(fileName, regex);
-                _emailItem.Attachments.Add(fileName, 1, 1, matches[0].Groups[2].Value);
+                string regex = @"^\\(.+\\)*(.+)\.(.+)$";
+                foreach (string fileName in attachments)
+                {
+                    // Add an attachment from the path as string, using regex to get the display name.
+                    MatchCollection matches = Regex.Matches(fileName, regex);
+                    _emailItem.Attachments.Add(fileName, 1, 1, matches[0].Groups[2].Value);
+                }
             }
+            catch
+            {
+                // Fail out from method.
+                return false;
+            }
+            
             // Success.
+            _emailCreated = true;
             return true;
         }
 
