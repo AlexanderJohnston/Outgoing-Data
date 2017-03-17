@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System;
 using System.Configuration;
-using SimpleConfig.BindingStrategies;
 
 namespace Interface
 {
@@ -38,7 +37,6 @@ namespace Interface
 
         public string Password { get; set; } = "";
 
-        [CustomEnumerable("emails")]
         public List<string> Emails { get; set; } = new List<string>();
     }
 }

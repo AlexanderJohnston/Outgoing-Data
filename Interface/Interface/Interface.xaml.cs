@@ -27,11 +27,14 @@ namespace Interface
     public partial class MainWindow
     {
         private List<JobNode> _jobNodes = new List<JobNode>();
+        private Job _selectedJob = new Job();
+        private User _currentUser = new User() {Name = "Alexander"};
+        private readonly JobAnalysis Daemon = new JobAnalysis();
 
         public MainWindow()
         {
             InitializeComponent();
-            List<string> subjects = new List<string>
+            /*List<string> subjects = new List<string>
             {
                 "alexanderj@engageusa.com", "leslies@engageusa.com"
             };
@@ -40,16 +43,14 @@ namespace Interface
                 @"\\ENGAGESTS1\Elements\Prospect Jobs\Conversions\CN9004A\Final Mailing Files\CN9004A01X_SAMPLE.CSV",
                 @"\\ENGAGESTS1\Elements\Prospect Jobs\Conversions\CN9004A\Final Mailing Files\CN9004A02X_SAMPLE.CSV"
             };
-            /*EmailHandler test = new Interface.EmailHandler();
+            EmailHandler test = new Interface.EmailHandler();
             bool valid = test.CreateEmail("Test Email", subjects, "Test Body of Email", attachments);
             if (valid == true)
             {
                 var result = test.Send();
                 MessageBox.Show(result, "test");
             }*/
-
-            JobAnalysis testclass = new JobAnalysis();
-            MessageBox.Show(testclass.Approved.ToString());
+            
         }
 
         /// <summary>
@@ -77,7 +78,6 @@ namespace Interface
         private void Work_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             JobsTreeView.ItemsSource = _jobNodes;
-            LoadingGrid.Visibility = Visibility.Collapsed;
         }
 
         /// <summary>
@@ -85,7 +85,22 @@ namespace Interface
         /// </summary>
         private void JobsTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
+            // Ensure that we aren't auditing a JobNode.
+            if (e.NewValue.GetType() == typeof(Job))
+            {
+                _selectedJob = (Job) e.NewValue;
+                Signator.Content = Daemon.Audit(_selectedJob);
+            }
+        }
 
+        private void Sign_Click(object sender, RoutedEventArgs e)
+        {
+            // Don't attempt to sign a job before selecting one.
+            if (_selectedJob.Name != "")
+            {
+                Daemon.Sign(_selectedJob, _currentUser);
+                Signator.Content = Daemon.Audit(_selectedJob);
+            }
         }
     }
 
