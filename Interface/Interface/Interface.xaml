@@ -10,8 +10,8 @@
         Title="Interface" Height="500" Width="600">
     <Grid Margin="10" Name="ExternalGrid">
         <Grid.RowDefinitions>
-            <RowDefinition Height="300"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" Name="InternalGrid">
             <Grid.RowDefinitions>
@@ -21,29 +21,28 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            
-            <TreeView Name="JobsTreeView" Grid.Row="0" Grid.Column="0" Height="300" Width="120"
-                      HorizontalAlignment="Left" VerticalAlignment="Top" 
-                      SelectedItemChanged="JobsTreeView_SelectedItemChanged">
-                <TreeView.Resources>
-                    <HierarchicalDataTemplate DataType="{x:Type local:JobNode}" ItemsSource="{Binding Jobs}">
-                        <TextBlock Text="{Binding Type}"/>
-                    </HierarchicalDataTemplate>
-                    <DataTemplate DataType="{x:Type local:Job}">
-                        <TextBlock Text="{Binding Name}" />
-                    </DataTemplate>
-                </TreeView.Resources>
-            </TreeView>
-            <StackPanel Grid.Row="0" Grid.Column="1">
+            <StackPanel Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Label Name="TreeLabel" Content="Jobs List" HorizontalAlignment="Center"/>
+                <TreeView Name="JobsTreeView" SelectedItemChanged="JobsTreeView_SelectedItemChanged" MinHeight="300" MinWidth="120">
+                    <TreeView.Resources>
+                        <HierarchicalDataTemplate DataType="{x:Type local:JobNode}" ItemsSource="{Binding Jobs}">
+                            <TextBlock Text="{Binding Type}"/>
+                        </HierarchicalDataTemplate>
+                        <DataTemplate DataType="{x:Type local:Job}">
+                            <TextBlock Text="{Binding Name}" />
+                        </DataTemplate>
+                    </TreeView.Resources>
+                </TreeView>
+            </StackPanel>
+            <Button Name="Sign" 
+                    Grid.Row="0" Grid.Column="1" Height="25" Width="60" VerticalAlignment="Top" Margin="8,25,0,25"
+                    Click="Sign_Click" Content="Sign Job"/>
+            <StackPanel Grid.Row="0" Grid.Column="2" Margin="8,0,0,0">
                 <Label Name="SignatorLabel" Content="Signed By:"/>
                 <Label Name="Signator" Content=""/>
             </StackPanel>
-            <Button Name="Sign" 
-                    Grid.Row="0" Grid.Column="2" Height="25" Width="60" VerticalAlignment="Top" Margin="0,25,0,0"
-                    Click="Sign_Click" Content="Sign Job"/>
         </Grid>
         <Button Name="Filler" Grid.Row="1" Height="40" VerticalAlignment="Bottom"/>
     </Grid>
