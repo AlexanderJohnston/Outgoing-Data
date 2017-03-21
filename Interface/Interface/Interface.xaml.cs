@@ -234,7 +234,7 @@ namespace Interface
             const string baseDir = @"\\engagests1\Elements\Prospect Jobs\Conversions\";
             List<string> prospecting = Directory.GetDirectories(path: baseDir).ToList();
             // This is used to differentiate job folders from general folders.
-            Regex nameSchema = new Regex(@"\w{2}\d{4}\w$");
+            Regex nameSchema = new Regex(@"(?<!x)\w{2}\d{4}\w$"); // The neg lookbehind is to remove "testing" jobs which start with an 'x'.
             JobNode jobList = new JobNode();
             foreach (string job in prospecting)
             {
