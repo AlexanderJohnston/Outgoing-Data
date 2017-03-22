@@ -7,6 +7,7 @@ using System.Linq;
 using Outlook = Microsoft.Office.Interop.Outlook.Application;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,6 +18,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using Microsoft.Office.Interop.Outlook;
 
 namespace Interface
@@ -29,7 +31,8 @@ namespace Interface
         private List<JobNode> _jobNodes = new List<JobNode>();
         private Job _selectedJob = new Job();
         private User _currentUser = new User() {Name = "Alexander"};
-        private readonly JobAnalysis Daemon = new JobAnalysis();
+        private readonly JobAnalysis Daemon = new JobAnalysis(); // Our trustworthy companion!
+        public string inputDate { get; set; }
 
         public MainWindow()
         {
@@ -53,10 +56,12 @@ namespace Interface
             
         }
 
-        /// <summary>
-        ///  Create a new work thread to run async for data binding.
-        /// </summary>
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            // Removed the async worker from OnLoaded and moved it to the search button OnClick.
+        }
+
+        private void Search_Click(object sender, RoutedEventArgs e)
         {
             BackgroundWorker work = new BackgroundWorker();
             work.RunWorkerCompleted += Work_RunWorkerCompleted;
@@ -69,7 +74,10 @@ namespace Interface
         /// </summary>
         private void Work_DoWork(object sender, DoWorkEventArgs e)
         {
-            _jobNodes = GatherJobs.Run("03.06.17");
+            System.Windows.Application.Current.Dispatcher.Invoke(DispatcherPriority.Normal,(ThreadStart)delegate {
+                inputDate = TextBoxDate.Text;
+                _jobNodes = GatherJobs.Run(inputDate);
+            });
         }
 
         /// <summary>

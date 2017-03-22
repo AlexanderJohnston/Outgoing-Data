@@ -8,6 +8,22 @@
         mc:Ignorable="d"
         Loaded="MainWindow_OnLoaded"
         Title="Interface" Height="500" Width="600">
+    <Window.Resources>
+        <Style x:Key="textBoxInError" TargetType="{x:Type TextBox}">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="ToolTip" Value="{Binding RelativeSource={x:Static RelativeSource.Self},
+                        Path=(Validation.Errors)[0].ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <ControlTemplate x:Key="validationTemplate">
+            <DockPanel>
+                <TextBlock Foreground="Red" FontSize="20">!</TextBlock>
+                <AdornedElementPlaceholder/>
+            </DockPanel>
+        </ControlTemplate>
+    </Window.Resources>
     <Grid Margin="10" Name="ExternalGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -25,7 +41,7 @@
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <Label Name="TreeLabel" Content="Jobs List" HorizontalAlignment="Center"/>
-                <TreeView Name="JobsTreeView" SelectedItemChanged="JobsTreeView_SelectedItemChanged" MinHeight="300" MinWidth="120">
+                <TreeView Name="JobsTreeView" SelectedItemChanged="JobsTreeView_SelectedItemChanged" MinHeight="300" MinWidth="120" MaxHeight="350">
                     <TreeView.Resources>
                         <HierarchicalDataTemplate DataType="{x:Type local:JobNode}" ItemsSource="{Binding Jobs}">
                             <TextBlock Text="{Binding Type}"/>
@@ -44,7 +60,25 @@
                 <Label Name="Signator" Content=""/>
             </StackPanel>
         </Grid>
-        <Button Name="Filler" Grid.Row="1" Height="40" VerticalAlignment="Bottom"/>
+        <StackPanel Grid.Row="1" Orientation="Vertical">
+            <Label Name="labelDate" Content="Date of First Monday:"/>
+            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,0">
+                <Button Name="Search" Content="Search" Height="25" Width="50" VerticalAlignment="Bottom" Margin="0,0,10,0" Click="Search_Click"/>
+                <TextBox Name="TextBoxDate" Height="25" MinWidth="60" Margin="0,0,10,0"
+                         Validation.ErrorTemplate="{StaticResource validationTemplate}"
+                         Style="{StaticResource textBoxInError}">
+                    <TextBox.Text>
+                        <Binding Path="inputDate" UpdateSourceTrigger="PropertyChanged" >
+                            <Binding.ValidationRules>
+                                <local:DateRule/>
+                            </Binding.ValidationRules>
+                        </Binding>
+
+                    </TextBox.Text>
+                </TextBox>
+            </StackPanel>
+        </StackPanel>
+        
     </Grid>
 </Window>
 
