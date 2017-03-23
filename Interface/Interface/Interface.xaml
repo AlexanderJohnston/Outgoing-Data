@@ -9,25 +9,19 @@
         Loaded="MainWindow_OnLoaded"
         Title="Interface" Height="500" Width="600">
     <Window.Resources>
-        <Style x:Key="textBoxInError" TargetType="{x:Type TextBox}">
-            <Style.Triggers>
-                <Trigger Property="Validation.HasError" Value="true">
-                    <Setter Property="ToolTip" Value="{Binding RelativeSource={x:Static RelativeSource.Self},
-                        Path=(Validation.Errors)[0].ErrorContent}"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
         <ControlTemplate x:Key="validationTemplate">
             <DockPanel>
-                <TextBlock Foreground="Red" FontSize="20">!</TextBlock>
-                <AdornedElementPlaceholder/>
+                <TextBlock Foreground="Red" Margin="2,0,0,0" 
+                   Text="{Binding ElementName=DateValidAdorner, 
+                   Path=AdornedElement.(Validation.Errors)[0].ErrorContent}">!</TextBlock>
+                <AdornedElementPlaceholder x:Name="DateValidAdorner"/>
             </DockPanel>
         </ControlTemplate>
     </Window.Resources>
     <Grid Margin="10" Name="ExternalGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="AUto"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" Name="InternalGrid">
             <Grid.RowDefinitions>
@@ -53,7 +47,7 @@
                 </TreeView>
             </StackPanel>
             <Button Name="Sign" 
-                    Grid.Row="0" Grid.Column="1" Height="25" Width="60" VerticalAlignment="Top" Margin="8,25,0,25"
+                    Grid.Row="0" Grid.Column="1" Height="25" Width="60" VerticalAlignment="Top" Margin="8,27,0,25"
                     Click="Sign_Click" Content="Sign Job"/>
             <StackPanel Grid.Row="0" Grid.Column="2" Margin="8,0,0,0">
                 <Label Name="SignatorLabel" Content="Signed By:"/>
@@ -61,19 +55,17 @@
             </StackPanel>
         </Grid>
         <StackPanel Grid.Row="1" Orientation="Vertical">
-            <Label Name="labelDate" Content="Date of First Monday:"/>
+            <Label Name="labelDate" Content="Date of First Monday:" Margin="0,0,0,10"/>
             <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,0">
                 <Button Name="Search" Content="Search" Height="25" Width="50" VerticalAlignment="Bottom" Margin="0,0,10,0" Click="Search_Click"/>
-                <TextBox Name="TextBoxDate" Height="25" MinWidth="60" Margin="0,0,10,0"
-                         Validation.ErrorTemplate="{StaticResource validationTemplate}"
-                         Style="{StaticResource textBoxInError}">
+                <TextBox x:Name="TextBoxDate" Height="25" MinWidth="60" Margin="0,0,10,0"
+                         Validation.ErrorTemplate="{StaticResource validationTemplate}">
                     <TextBox.Text>
-                        <Binding Path="inputDate" UpdateSourceTrigger="PropertyChanged" >
+                        <Binding Source="inputDate" Path="inputDate" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                             <Binding.ValidationRules>
                                 <local:DateRule/>
                             </Binding.ValidationRules>
                         </Binding>
-
                     </TextBox.Text>
                 </TextBox>
             </StackPanel>

@@ -32,7 +32,7 @@ namespace Interface
         private Job _selectedJob = new Job();
         private User _currentUser = new User() {Name = "Alexander"};
         private readonly JobAnalysis Daemon = new JobAnalysis(); // Our trustworthy companion!
-        public string inputDate { get; set; }
+        public string inputDate { get; set; } = "03.06.17";
 
         public MainWindow()
         {
@@ -180,7 +180,7 @@ namespace Interface
             {
                 try
                 {
-                    if (!nameSchema.Match(job).Success) continue;
+                    if (!nameSchema.Match(job).Success) continue; // If regex doesn't match.
                     Job foundHouse = new Job
                     {
                         Name = (nameSchema.Match(job).Value),
@@ -214,7 +214,7 @@ namespace Interface
             {
                 try
                 {
-                    if (!nameSchema.Match(job).Success) continue;
+                    if (!nameSchema.Match(job).Success) continue; // If regex doesn't match.
                     Job foundProuse = new Job
                     {
                         Name = (nameSchema.Match(job).Value),
@@ -242,13 +242,13 @@ namespace Interface
             const string baseDir = @"\\engagests1\Elements\Prospect Jobs\Conversions\";
             List<string> prospecting = Directory.GetDirectories(path: baseDir).ToList();
             // This is used to differentiate job folders from general folders.
-            Regex nameSchema = new Regex(@"(?<!x)\w{2}\d{4}\w$"); // The neg lookbehind is to remove "testing" jobs which start with an 'x'.
+            Regex nameSchema = new Regex(@"(?<!x)\w{2}\d{4}\w$"); // The neg lookbehind is to remove "testing" jobs which start with a literal x.
             JobNode jobList = new JobNode();
             foreach (string job in prospecting)
             {
                 try
                 {
-                    if (!nameSchema.Match(job).Success) continue;
+                    if (!nameSchema.Match(job).Success) continue; // If regex doesn't match.
                     Job foundProspecting = new Job
                     {
                         Name = (nameSchema.Match(job).Value),
