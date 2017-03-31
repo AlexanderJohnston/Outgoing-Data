@@ -60,6 +60,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="FileObservation.cs" />
+    <Compile Include="Jobs.cs" />
     <Compile Include="Rules.cs" />
     <Compile Include="SFTP.cs" />
     <Compile Include="Test.cs" />
