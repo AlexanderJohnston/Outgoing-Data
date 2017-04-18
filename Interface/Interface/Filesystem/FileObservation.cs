@@ -17,7 +17,7 @@ namespace Interface
         public static JobNode House(string date)
         {
             const string baseDir = @"\\engagests1\Elements\Prospect Jobs\Conversions\00-HOUSE_PROUSE\Completed\";
-            string[] house = Directory.GetDirectories(path: baseDir + date + @" House\");
+            string[] house = Directory.GetDirectories(path: baseDir + date + @" House\"); // TODO exception handling
             Regex nameSchema = new Regex(@"\w{2}\d{4}$");
             JobNode jobList = new JobNode();
             foreach (string job in house)

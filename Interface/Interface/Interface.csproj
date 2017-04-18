@@ -35,6 +35,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="nunit.framework, Version=3.6.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.6.1\lib\net45\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
@@ -60,12 +64,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="FileObservation.cs" />
-    <Compile Include="Jobs.cs" />
-    <Compile Include="Rules.cs" />
-    <Compile Include="SFTP.cs" />
-    <Compile Include="Test.cs" />
-    <Compile Include="User.cs" />
+    <Compile Include="Filesystem\FileObservation.cs" />
+    <Compile Include="Objects\Job.cs" />
+    <Compile Include="GUI\Rules.cs" />
+    <Compile Include="Tools\SFTP.cs" />
+    <Compile Include="Unit Tests\TestNodeCreation.cs" />
+    <Compile Include="Unit Tests\Test.cs" />
+    <Compile Include="Objects\User.cs" />
     <Page Include="Interface.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -85,8 +90,8 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="JobAnalysis.cs" />
-    <Compile Include="Outlook.cs" />
+    <Compile Include="Filesystem\JobAnalysis.cs" />
+    <Compile Include="Tools\Outlook.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
