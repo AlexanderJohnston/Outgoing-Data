@@ -21,6 +21,12 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 using Microsoft.Office.Interop.Outlook;
 
+
+/* Hello!
+ * Please feel free to check out the basic Async code here, and then browse
+   through the rest of the files/folders in this repository. I tried to
+   organize better this time.
+    */
 namespace Interface
 {
     /// <summary>
